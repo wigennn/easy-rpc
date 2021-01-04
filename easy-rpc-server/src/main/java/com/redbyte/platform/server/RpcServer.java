@@ -4,6 +4,8 @@ import com.redbyte.platform.ServiceRegistry;
 import com.redbyte.platform.annotation.EasyRpcService;
 import com.redbyte.platform.codec.RpcDecoder;
 import com.redbyte.platform.codec.RpcEncoder;
+import com.redbyte.platform.domain.RpcRequest;
+import com.redbyte.platform.domain.RpcResponse;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -69,8 +71,8 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
                         @Override
                         protected void initChannel(SocketChannel channel) throws Exception {
                             ChannelPipeline pipeline = channel.pipeline();
-                            pipeline.addLast(new RpcEncoder());
-                            pipeline.addLast(new RpcDecoder());
+                            pipeline.addLast(new RpcEncoder(RpcResponse.class));
+                            pipeline.addLast(new RpcDecoder(RpcRequest.class));
                             pipeline.addLast(new RpcServerHandler(handlerMap));
                         }
                     });

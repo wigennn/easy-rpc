@@ -54,8 +54,8 @@ public class RpcClient extends SimpleChannelInboundHandler<RpcResponse> {
                         @Override
                         protected void initChannel(SocketChannel channel) throws Exception {
                             ChannelPipeline pipeline = channel.pipeline();
-                            pipeline.addLast(new RpcEncoder());
-                            pipeline.addLast(new RpcDecoder());
+                            pipeline.addLast(new RpcEncoder(RpcResponse.class));
+                            pipeline.addLast(new RpcDecoder(RpcRequest.class));
                             pipeline.addLast(RpcClient.this);
                         }
                     });
